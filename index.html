@@ -1,0 +1,1356 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Фортуна знаний - Игровое Королевство</title>
+    <style>
+        /* Стили остаются такими же как в предыдущей версии */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Neue', cursive;
+            background: linear-gradient(135deg, #FF69B4 0%, #4169E1 25%, #32CD32 50%, #FFD700 75%, #8A2BE2 100%);
+            min-height: 100vh;
+            color: #2C3E50;
+            overflow-x: hidden;
+            animation: rainbow-bg 10s ease infinite;
+            background-size: 400% 400%;
+        }
+
+        @keyframes rainbow-bg {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .title {
+            font-size: 4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #FF6B6B, #4ECDC4, #FFD166, #06D6A0, #7209B7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+            text-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: #2C3E50;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        /* Левая панель - Разделы */
+        .sections-panel {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: 4px solid #F1C40F;
+        }
+
+        .sections-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 30px;
+            color: #2C3E50;
+            background: linear-gradient(135deg, #8B4513, #D2691E);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .sections-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .section-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            border-color: #F1C40F;
+        }
+
+        .section-card.selected {
+            border-color: #F1C40F;
+            background: rgba(241, 196, 15, 0.1);
+            transform: scale(1.05);
+        }
+
+        .section-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+        }
+
+        .section-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #2C3E50;
+            margin-bottom: 8px;
+        }
+
+        .section-description {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 8px;
+            font-style: italic;
+        }
+
+        .section-status {
+            font-size: 0.9rem;
+            color: #666;
+            font-weight: 600;
+        }
+
+        .custom-theme-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 0.8rem;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-edit {
+            background: #FFD166;
+            color: #2C3E50;
+        }
+
+        .btn-delete {
+            background: #FF6B6B;
+            color: white;
+        }
+
+        .btn-small:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Правая панель - Игроки и правила */
+        .right-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .players-setup {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: 4px solid #4ECDC4;
+        }
+
+        .setup-title {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 25px;
+            color: #2C3E50;
+        }
+
+        .players-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .player-input {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .player-input:hover {
+            border-color: #4ECDC4;
+            transform: translateY(-2px);
+        }
+
+        .player-input input {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            font-size: 1rem;
+            font-family: 'Comic Neue', cursive;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .player-color {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .rules-panel {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: 4px solid #FF6B6B;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .rules-title {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 25px;
+            color: #2C3E50;
+        }
+
+        .rules-content {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #2C3E50;
+        }
+
+        .rules-section {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 12px;
+            border-left: 4px solid #FFD166;
+        }
+
+        .rules-section h3 {
+            color: #2C3E50;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .rules-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .rules-section li {
+            margin-bottom: 8px;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .rules-section li:before {
+            content: '🎯';
+            position: absolute;
+            left: 0;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 25px;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-family: 'Comic Neue', cursive;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #FF6B6B, #4ECDC4);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #FFD166, #06D6A0);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .add-player {
+            background: linear-gradient(135deg, #7209B7, #F72585);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-family: 'Comic Neue', cursive;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px auto;
+            display: block;
+        }
+
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(100px, 100px) rotate(360deg); }
+        }
+
+        /* Модальные окна */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .modal-title {
+            font-size: 2.2rem;
+            color: #2C3E50;
+            margin-bottom: 10px;
+        }
+
+        .modal-subtitle {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .theme-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-label {
+            font-weight: 700;
+            color: #2C3E50;
+        }
+
+        .form-input {
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-family: 'Comic Neue', cursive;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-input:focus {
+            border-color: #4ECDC4;
+            outline: none;
+        }
+
+        .categories-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .category-item {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+        }
+
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .category-name {
+            font-weight: 700;
+            color: #2C3E50;
+        }
+
+        .questions-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .question-item {
+            background: white;
+            border-radius: 8px;
+            padding: 12px;
+            border: 1px solid #e9ecef;
+        }
+
+        .question-text {
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .answers-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .answer-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .correct-answer {
+            color: #06D6A0;
+            font-weight: 600;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 25px;
+        }
+
+        .btn-modal {
+            padding: 10px 20px;
+            font-size: 1rem;
+        }
+
+        /* Папка с темами */
+        .themes-folder {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            border: 3px dashed #4ECDC4;
+            grid-column: 1 / -1;
+        }
+
+        .folder-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .folder-title {
+            font-size: 1.5rem;
+            color: #2C3E50;
+            font-weight: 700;
+        }
+
+        .folder-toggle {
+            background: #4ECDC4;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'Comic Neue', cursive;
+            font-weight: 600;
+        }
+
+        .folder-content {
+            display: none;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .folder-content.expanded {
+            display: grid;
+        }
+
+        .folder-theme-card {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .folder-theme-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-color: #4ECDC4;
+        }
+
+        .folder-theme-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .folder-theme-name {
+            font-weight: 700;
+            color: #2C3E50;
+            margin-bottom: 5px;
+            text-align: center;
+        }
+
+        .folder-theme-description {
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 10px;
+            text-align: center;
+            font-style: italic;
+        }
+
+        .folder-theme-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 1200px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .sections-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sections-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .title {
+                font-size: 3rem;
+            }
+            
+            .section-card {
+                padding: 20px;
+            }
+            
+            .answers-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .custom-theme-actions {
+                flex-direction: column;
+            }
+            
+            .folder-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .sections-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .title {
+                font-size: 2.5rem;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 200px;
+            }
+            
+            .modal-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="animated-bg" id="animated-bg"></div>
+
+    <div class="container">
+        <header class="header">
+            <h1 class="title">🎲 Фортуна знаний 🎲</h1>
+            <p class="subtitle">Игра, где знания становятся победой!</p>
+        </header>
+
+        <div class="main-content">
+            <!-- Левая панель - Разделы -->
+            <div class="sections-panel">
+                <h2 class="sections-title">🎯 Выбери раздел знаний</h2>
+                <div class="sections-grid" id="sections-grid">
+                    <!-- Стандартные разделы -->
+                    <div class="section-card" onclick="selectSection('chess')">
+                        <div class="section-icon">♛</div>
+                        <div class="section-name">Шахматы</div>
+                        <div class="section-description">Игра разума и стратегии</div>
+                        <div class="section-status">Готов к игре!</div>
+                    </div>
+
+                    <div class="section-card" onclick="selectSection('math')">
+                        <div class="section-icon">➗</div>
+                        <div class="section-name">Математика</div>
+                        <div class="section-description">Царица наук</div>
+                        <div class="section-status">Готов к игре!</div>
+                    </div>
+
+                    <div class="section-card" onclick="selectSection('russian')">
+                        <div class="section-icon">📚</div>
+                        <div class="section-name">Русский язык</div>
+                        <div class="section-description">Великий и могучий</div>
+                        <div class="section-status">Готов к игре!</div>
+                    </div>
+
+                    <div class="section-card" onclick="selectSection('fairy-tales')">
+                        <div class="section-icon">📖</div>
+                        <div class="section-name">Сказки</div>
+                        <div class="section-description">Мир волшебства и чудес</div>
+                        <div class="section-status">Готов к игре!</div>
+                    </div>
+
+                    <div class="section-card" onclick="selectSection('logic')">
+                        <div class="section-icon">🧩</div>
+                        <div class="section-name">Логика</div>
+                        <div class="section-description">Развиваем мышление</div>
+                        <div class="section-status">Скоро будет!</div>
+                    </div>
+
+                    <div class="section-card" onclick="selectSection('animals')">
+                        <div class="section-icon">🐾</div>
+                        <div class="section-name">Животные</div>
+                        <div class="section-description">Мир фауны</div>
+                        <div class="section-status">Готов к игре!</div>
+                    </div>
+
+
+                    <div class="section-card" onclick="selectSection('emotions')">
+                        <div class="section-icon">😊</div>
+                        <div class="section-name">Эмоции</div>
+                        <div class="section-description">Читаем с выражением!</div>
+                        <div class="section-status">Готов к игре!</div>
+                    </div>
+
+		    <div class="section-card" onclick="selectSection('behavior')">
+                        <div class="section-icon">📝</div>
+                        <div class="section-name">Правила поведения</div>
+                        <div class="section-description">Этикет и вежливость</div>
+                        <div class="section-status">Готов к игре!</div>
+                    </div>
+
+                    <!-- Раздел для создания своей темы -->
+                    <div class="section-card" onclick="selectSection('custom-create')">
+                        <div class="section-icon">🎨</div>
+                        <div class="section-name">Создать свою тему</div>
+                        <div class="section-description">Придумай уникальную игру</div>
+                        <div class="section-status">Создай свою игру!</div>
+                    </div>
+
+                    <!-- Папка с сохраненными темами -->
+                    <div class="themes-folder">
+                        <div class="folder-header">
+                            <h3 class="folder-title">📁 Мои созданные темы</h3>
+                            <button class="folder-toggle" onclick="toggleThemesFolder()">📂 Показать темы</button>
+                        </div>
+                        <div class="folder-content" id="themes-folder-content">
+                            <!-- Темы будут добавляться здесь -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Правая панель - Игроки и правила -->
+            <div class="right-panel">
+                <div class="players-setup">
+                    <h2 class="setup-title">👥 Настройка игроков</h2>
+                    <div class="players-container" id="players-container">
+                        <div class="player-input">
+                            <input type="text" placeholder="Имя игрока 1" value="Игрок 1">
+                            <div class="player-color" style="background: #FF6B6B;"></div>
+                        </div>
+                        <div class="player-input">
+                            <input type="text" placeholder="Имя игрока 2" value="Игрок 2">
+                            <div class="player-color" style="background: #4ECDC4;"></div>
+                        </div>
+                    </div>
+                    <button class="add-player" onclick="addPlayer()">+ Добавить игрока</button>
+                    
+                    <div class="controls">
+                        <button class="btn btn-primary" onclick="startGame()">🎮 Начать игру</button>
+                        <button class="btn btn-secondary" onclick="resetPlayers()">🔄 Сбросить</button>
+                    </div>
+                </div>
+
+                <div class="rules-panel">
+                    <h2 class="rules-title">📜 Правила игры</h2>
+                    <div class="rules-content">
+                        <div class="rules-section">
+                            <h3>🎯 Цель игры</h3>
+                            <p>Станьте первым игроком, который соберёт всю свою коллекцию фигурок из волшебного магазина!</p>
+                        </div>
+
+                        <div class="rules-section">
+                            <h3>🔄 Ход игры</h3>
+                            <p>Игроки ходят по очереди. Ход состоит из трёх шагов:</p>
+                            <ul>
+                                <li><strong>🟦 Выбор Поля</strong> - На табло высвечивается случайная координата с игрового поля. Найдите его на основном поле и запомните его цвет.</li>
+                                <li><strong>❓ Ответ на Вопрос</strong> - Возьмите карточку с колоды, цвет которой совпадает с цветом выпавшего поля.</li>
+                                <li><strong>🛒 Покупка в Магазине</strong> - Если у вас достаточно монет, купите фигурку из своей коллекции!</li>
+                            </ul>
+                        </div>
+
+                        <div class="rules-section">
+                            <h3>🔥 Система наград</h3>
+                            <ul>
+                                <li><strong>Правильный ответ?</strong> Поздравляем! Вы получаете 1 золотую монету.</li>
+                                <li><strong>Неправильный ответ?</strong> Не беда! Удача улыбнется вам в следующий раз.</li>
+                            </ul>
+                        </div>
+
+                        <div class="rules-section">
+                            <h3>🏆 Конец игры и Победа</h3>
+                            <p>Игра заканчивается мгновенно, как только один из игроков покупает последнюю недостающую фигурку из своей коллекции. Он и становится победителем!</p>
+                        </div>
+
+                        <div class="rules-section">
+                            <h3>💡 Советы для победы</h3>
+                            <ul>
+                                <li>Внимательно изучайте игровое поле</li>
+                                <li>Запоминайте цвета клеток</li>
+                                <li>Планируйте покупки в магазине</li>
+                                <li>Следите за коллекцией соперников</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для создания своей темы -->
+    <div class="modal" id="custom-theme-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">🎨 Создай свою тему</h2>
+                <p class="modal-subtitle">Придумай уникальную тему и вопросы для игры</p>
+            </div>
+            
+            <form class="theme-form" id="custom-theme-form">
+                <div class="form-group">
+                    <label class="form-label">Название темы</label>
+                    <input type="text" class="form-input" id="theme-name" placeholder="Например: Моя викторина" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Описание темы</label>
+                    <input type="text" class="form-input" id="theme-description" placeholder="Краткое описание вашей темы">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Эмодзи для темы</label>
+                    <input type="text" class="form-input" id="theme-emoji" placeholder="🎯" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Предметы для магазина (через запятую)</label>
+                    <input type="text" class="form-input" id="theme-items" placeholder="Например: Книга, Ручка, Тетрадь, Карандаш, Линейка, Ластик" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Цены предметов (через запятую, в том же порядке)</label>
+                    <input type="text" class="form-input" id="theme-prices" placeholder="Например: 10, 8, 6, 4, 3, 2" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Эмодзи для предметов (через запятую, в том же порядке)</label>
+                    <input type="text" class="form-input" id="theme-emojis" placeholder="Например: 📚, ✏️, 📓, ✎, 📏, 🧼" required>
+                </div>
+                
+                <div class="categories-container" id="categories-container">
+                    <!-- Категории будут добавляться здесь -->
+                </div>
+                
+                <button type="button" class="btn btn-secondary" onclick="addCategory()">+ Добавить категорию</button>
+                
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary btn-modal" onclick="closeCustomThemeModal()">❌ Отмена</button>
+                    <button type="submit" class="btn btn-primary btn-modal">✅ Сохранить тему</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const playerColors = ['#FF6B6B', '#4ECDC4', '#FFD166', '#06D6A0', '#118AB2', '#7209B7'];
+        let selectedSection = 'chess';
+        let categoryCounter = 0;
+        let editingThemeId = null;
+
+        // Создаем анимированный фон
+        function createAnimatedBackground() {
+            const bg = document.getElementById('animated-bg');
+            for (let i = 0; i < 20; i++) {
+                const bubble = document.createElement('div');
+                bubble.className = 'bubble';
+                bubble.style.width = Math.random() * 100 + 50 + 'px';
+                bubble.style.height = bubble.style.width;
+                bubble.style.left = Math.random() * 100 + 'vw';
+                bubble.style.top = Math.random() * 100 + 'vh';
+                bubble.style.animationDelay = Math.random() * 20 + 's';
+                bubble.style.animationDuration = (Math.random() * 20 + 10) + 's';
+                bg.appendChild(bubble);
+            }
+        }
+
+        function selectSection(section) {
+            if (section === 'custom-create') {
+                openCustomThemeModal();
+                return;
+            }
+            
+            selectedSection = section;
+            document.querySelectorAll('.section-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Выделяем только стандартные разделы, не темы в папке
+            const targetCard = event?.currentTarget;
+            if (targetCard && !targetCard.closest('.themes-folder')) {
+                targetCard.classList.add('selected');
+            }
+        }
+
+        function addPlayer() {
+            const container = document.getElementById('players-container');
+            const playerCount = container.children.length;
+            
+            if (playerCount < 6) {
+                const newPlayer = document.createElement('div');
+                newPlayer.className = 'player-input';
+                newPlayer.innerHTML = `
+                    <input type="text" placeholder="Имя игрока ${playerCount + 1}">
+                    <div class="player-color" style="background: ${playerColors[playerCount]}"></div>
+                `;
+                container.appendChild(newPlayer);
+            } else {
+                alert('Максимальное количество игроков - 6!');
+            }
+        }
+
+        function resetPlayers() {
+            const container = document.getElementById('players-container');
+            container.innerHTML = `
+                <div class="player-input">
+                    <input type="text" placeholder="Имя игрока 1" value="Игрок 1">
+                    <div class="player-color" style="background: #FF6B6B;"></div>
+                </div>
+                <div class="player-input">
+                    <input type="text" placeholder="Имя игрока 2" value="Игрок 2">
+                    <div class="player-color" style="background: #4ECDC4;"></div>
+                </div>
+            `;
+        }
+
+        function startGame() {
+            const players = [];
+            const inputs = document.querySelectorAll('.player-input input');
+            
+            inputs.forEach((input, index) => {
+                if (input.value.trim()) {
+                    players.push({
+                        name: input.value.trim() || `Игрок ${index + 1}`,
+                        color: playerColors[index],
+                        coins: 0,
+                        pieces: { king: 0, queen: 0, rook: 0, bishop: 0, knight: 0, pawn: 0 }
+                    });
+                }
+            });
+
+            if (players.length < 1) {
+                alert('Добавьте хотя бы одного игрока!');
+                return;
+            }
+
+            if (players.length > 6) {
+                alert('Максимальное количество игроков - 6!');
+                return;
+            }
+
+            // Сохраняем настройки игроков
+            localStorage.setItem('gamePlayers', JSON.stringify(players));
+            localStorage.setItem('selectedSection', selectedSection);
+
+            // Переходим к выбранному разделу
+            if (selectedSection === 'chess') {
+                window.location.href = 'chess.html';
+            } else if (selectedSection === 'math') {
+                window.location.href = 'math.html';
+            } else if (selectedSection === 'russian') {
+                window.location.href = 'russian.html';
+            } else if (selectedSection === 'fairy-tales') {
+                window.location.href = 'fairy-tales.html';
+	    } else if (selectedSection === 'logic') {
+                window.location.href = 'logic.html';
+	    } else if (selectedSection === 'animals') {
+                window.location.href = 'animals.html';
+            } else if (selectedSection === 'behavior') {
+                window.location.href = 'behavior.html';
+             } else if (selectedSection === 'emotions') {
+                window.location.href = 'emotions.html';
+            } else if (selectedSection.startsWith('custom-')) {
+                // Загружаем пользовательскую тему
+                const themeId = selectedSection.split('-')[1];
+                localStorage.setItem('customThemeId', themeId);
+                window.location.href = 'custom-theme.html';
+            } else {
+                // Для разделов "Скоро будет!"
+                alert('Этот раздел скоро будет доступен! Сейчас можно играть в "Шахматы", "Математику", "Русский язык" и "Сказки".');
+            }
+        }
+
+        // Функции для работы с пользовательскими темами
+        function openCustomThemeModal(themeId = null) {
+            editingThemeId = themeId;
+            document.getElementById('custom-theme-modal').classList.add('active');
+            
+            if (themeId) {
+                // Режим редактирования
+                loadThemeForEditing(themeId);
+            } else {
+                // Режим создания
+                resetThemeForm();
+                if (categoryCounter === 0) {
+                    addCategory();
+                }
+            }
+        }
+
+        function closeCustomThemeModal() {
+            document.getElementById('custom-theme-modal').classList.remove('active');
+            editingThemeId = null;
+        }
+
+        function resetThemeForm() {
+            document.getElementById('custom-theme-form').reset();
+            document.getElementById('categories-container').innerHTML = '';
+            categoryCounter = 0;
+        }
+
+        function loadThemeForEditing(themeId) {
+            const customThemes = JSON.parse(localStorage.getItem('customThemes') || '[]');
+            const theme = customThemes.find(t => t.id === themeId);
+            
+            if (!theme) {
+                alert('Тема не найдена!');
+                return;
+            }
+            
+            // Заполняем форму данными темы
+            document.getElementById('theme-name').value = theme.name;
+            document.getElementById('theme-description').value = theme.description || '';
+            document.getElementById('theme-emoji').value = theme.emoji || '🎯';
+            document.getElementById('theme-items').value = theme.items.join(', ');
+            document.getElementById('theme-prices').value = theme.prices.join(', ');
+            document.getElementById('theme-emojis').value = theme.itemEmojis.join(', ');
+            
+            // Очищаем контейнер категорий
+            document.getElementById('categories-container').innerHTML = '';
+            categoryCounter = 0;
+            
+            // Добавляем категории
+            theme.categories.forEach((category, index) => {
+                addCategory();
+                const lastCategory = document.querySelector('.category-item:last-child');
+                lastCategory.querySelector('.category-name-input').value = category.name;
+                lastCategory.querySelector('.category-color-select').value = category.color;
+                
+                // Очищаем вопросы по умолчанию и добавляем сохраненные
+                const questionsContainer = lastCategory.querySelector('.questions-container');
+                questionsContainer.innerHTML = '';
+                
+                category.questions.forEach((question, qIndex) => {
+                    const questionItem = document.createElement('div');
+                    questionItem.className = 'question-item';
+                    questionItem.innerHTML = `
+                        <div class="question-text">Вопрос ${qIndex + 1}</div>
+                        <div class="form-group">
+                            <input type="text" class="form-input question-text-input" placeholder="Текст вопроса" value="${question.question}" required>
+                        </div>
+                        <div class="answers-container">
+                            ${question.answers.map((answer, aIndex) => `
+                                <div class="answer-item">
+                                    <input type="radio" name="correct-${categoryCounter}-${qIndex}" value="${aIndex}" ${aIndex === question.correct ? 'checked' : ''}>
+                                    <input type="text" class="form-input answer-input" placeholder="Вариант ответа ${aIndex + 1}" value="${answer}" required>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <button type="button" class="btn btn-secondary btn-small" onclick="removeQuestion(this)">🗑️ Удалить вопрос</button>
+                    `;
+                    questionsContainer.appendChild(questionItem);
+                });
+            });
+        }
+
+        function addCategory() {
+            categoryCounter++;
+            const categoriesContainer = document.getElementById('categories-container');
+            
+            const categoryItem = document.createElement('div');
+            categoryItem.className = 'category-item';
+            categoryItem.innerHTML = `
+                <div class="category-header">
+                    <div class="category-name">Категория ${categoryCounter}</div>
+                    <button type="button" class="btn btn-secondary btn-small" onclick="removeCategory(this)">🗑️ Удалить</button>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Название категории</label>
+                    <input type="text" class="form-input category-name-input" placeholder="Например: Эмодзи" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Цвет категории</label>
+                    <select class="form-input category-color-select">
+                        <option value="#FF6B6B">Красный</option>
+                        <option value="#4169E1">Синий</option>
+                        <option value="#32CD32">Зеленый</option>
+                        <option value="#8A2BE2">Фиолетовый</option>
+                        <option value="#FFD700">Желтый</option>
+                        <option value="#FF8C00">Оранжевый</option>
+                        <option value="#87CEEB">Голубой</option>
+                        <option value="#FF69B4">Розовый</option>
+                    </select>
+                </div>
+                <div class="questions-container" id="questions-${categoryCounter}">
+                    <!-- Вопросы будут добавляться здесь -->
+                </div>
+                <button type="button" class="btn btn-secondary btn-small" onclick="addQuestion(${categoryCounter})">+ Добавить вопрос</button>
+            `;
+            
+            categoriesContainer.appendChild(categoryItem);
+            
+            // Добавляем первый вопрос для категории
+            addQuestion(categoryCounter);
+        }
+
+        function removeCategory(button) {
+            if (categoryCounter <= 1) {
+                alert('Должна быть хотя бы одна категория!');
+                return;
+            }
+            
+            const categoryItem = button.closest('.category-item');
+            categoryItem.remove();
+            categoryCounter--;
+        }
+
+        function addQuestion(categoryId) {
+            const questionsContainer = document.getElementById(`questions-${categoryId}`);
+            const questionCount = questionsContainer.children.length;
+            
+            if (questionCount >= 10) {
+                alert('Максимум 10 вопросов в категории!');
+                return;
+            }
+            
+            const questionItem = document.createElement('div');
+            questionItem.className = 'question-item';
+            questionItem.innerHTML = `
+                <div class="question-text">Вопрос ${questionCount + 1}</div>
+                <div class="form-group">
+                    <input type="text" class="form-input question-text-input" placeholder="Текст вопроса" required>
+                </div>
+                <div class="answers-container">
+                    <div class="answer-item">
+                        <input type="radio" name="correct-${categoryId}-${questionCount}" value="0" checked>
+                        <input type="text" class="form-input answer-input" placeholder="Вариант ответа 1" required>
+                    </div>
+                    <div class="answer-item">
+                        <input type="radio" name="correct-${categoryId}-${questionCount}" value="1">
+                        <input type="text" class="form-input answer-input" placeholder="Вариант ответа 2" required>
+                    </div>
+                    <div class="answer-item">
+                        <input type="radio" name="correct-${categoryId}-${questionCount}" value="2">
+                        <input type="text" class="form-input answer-input" placeholder="Вариант ответа 3" required>
+                    </div>
+                    <div class="answer-item">
+                        <input type="radio" name="correct-${categoryId}-${questionCount}" value="3">
+                        <input type="text" class="form-input answer-input" placeholder="Вариант ответа 4" required>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-secondary btn-small" onclick="removeQuestion(this)">🗑️ Удалить вопрос</button>
+            `;
+            
+            questionsContainer.appendChild(questionItem);
+        }
+
+        function removeQuestion(button) {
+            const questionItem = button.closest('.question-item');
+            const questionsContainer = questionItem.parentElement;
+            
+            if (questionsContainer.children.length <= 1) {
+                alert('Должен быть хотя бы один вопрос в категории!');
+                return;
+            }
+            
+            questionItem.remove();
+            
+            // Обновляем номера вопросов
+            const questions = questionsContainer.querySelectorAll('.question-text');
+            questions.forEach((question, index) => {
+                question.textContent = `Вопрос ${index + 1}`;
+            });
+        }
+
+        // Обработка сохранения пользовательской темы
+        document.getElementById('custom-theme-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Собираем данные темы
+            const themeData = {
+                id: editingThemeId || Date.now().toString(),
+                name: document.getElementById('theme-name').value,
+                description: document.getElementById('theme-description').value,
+                emoji: document.getElementById('theme-emoji').value,
+                items: document.getElementById('theme-items').value.split(',').map(item => item.trim()),
+                prices: document.getElementById('theme-prices').value.split(',').map(price => parseInt(price.trim())),
+                itemEmojis: document.getElementById('theme-emojis').value.split(',').map(emoji => emoji.trim()),
+                categories: []
+            };
+            
+            // Проверяем корректность данных
+            if (themeData.items.length !== 6 || themeData.prices.length !== 6 || themeData.itemEmojis.length !== 6) {
+                alert('Количество предметов, цен и эмодзи должно быть равно 6!');
+                return;
+            }
+            
+            // Собираем категории
+            const categoryItems = document.querySelectorAll('.category-item');
+            
+            if (categoryItems.length === 0) {
+                alert('Добавьте хотя бы одну категорию!');
+                return;
+            }
+            
+            categoryItems.forEach((categoryItem, categoryIndex) => {
+                const categoryName = categoryItem.querySelector('.category-name-input').value;
+                const categoryColor = categoryItem.querySelector('.category-color-select').value;
+                const questionsContainer = categoryItem.querySelector('.questions-container');
+                const questionItems = questionsContainer.querySelectorAll('.question-item');
+                
+                if (questionItems.length === 0) {
+                    alert(`В категории "${categoryName}" должен быть хотя бы один вопрос!`);
+                    return;
+                }
+                
+                const category = {
+                    id: categoryIndex + 1,
+                    name: categoryName,
+                    color: categoryColor,
+                    questions: []
+                };
+                
+                // Собираем вопросы для категории
+                questionItems.forEach((questionItem, questionIndex) => {
+                    const questionText = questionItem.querySelector('.question-text-input').value;
+                    const answerInputs = questionItem.querySelectorAll('.answer-input');
+                    const correctAnswerRadio = questionItem.querySelector('input[type="radio"]:checked');
+                    
+                    const answers = Array.from(answerInputs).map(input => input.value);
+                    const correctAnswer = parseInt(correctAnswerRadio.value);
+                    
+                    category.questions.push({
+                        question: questionText,
+                        answers: answers,
+                        correct: correctAnswer
+                    });
+                });
+                
+                themeData.categories.push(category);
+            });
+            
+            // Сохраняем тему в localStorage
+            const customThemes = JSON.parse(localStorage.getItem('customThemes') || '[]');
+            
+            if (editingThemeId) {
+                // Обновляем существующую тему
+                const index = customThemes.findIndex(t => t.id === editingThemeId);
+                if (index !== -1) {
+                    customThemes[index] = themeData;
+                }
+            } else {
+                // Добавляем новую тему
+                customThemes.push(themeData);
+            }
+            
+            localStorage.setItem('customThemes', JSON.stringify(customThemes));
+            
+            alert('Тема успешно сохранена!');
+            closeCustomThemeModal();
+            
+            // Обновляем список разделов
+            updateCustomThemesFolder();
+        });
+
+        function updateCustomThemesFolder() {
+            const folderContent = document.getElementById('themes-folder-content');
+            const customThemes = JSON.parse(localStorage.getItem('customThemes') || '[]');
+            
+            // Очищаем папку
+            folderContent.innerHTML = '';
+            
+            if (customThemes.length === 0) {
+                folderContent.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 20px; color: #666;">
+                        📝 У вас пока нет созданных тем. Нажмите "Создать свою тему" чтобы добавить первую!
+                    </div>
+                `;
+                return;
+            }
+            
+            // Добавляем темы в папку
+            customThemes.forEach(theme => {
+                const themeCard = document.createElement('div');
+                themeCard.className = 'folder-theme-card';
+                themeCard.onclick = () => playCustomTheme(theme.id);
+                themeCard.innerHTML = `
+                    <div class="folder-theme-icon">${theme.emoji}</div>
+                    <div class="folder-theme-name">${theme.name}</div>
+                    <div class="folder-theme-description">${theme.description || 'Без описания'}</div>
+                    <div class="folder-theme-actions">
+                        <button class="btn-small btn-edit" onclick="event.stopPropagation(); editCustomTheme('${theme.id}')">✏️ Редактировать</button>
+                        <button class="btn-small btn-delete" onclick="event.stopPropagation(); deleteCustomTheme('${theme.id}')">🗑️ Удалить</button>
+                    </div>
+                `;
+                
+                folderContent.appendChild(themeCard);
+            });
+        }
+
+        function toggleThemesFolder() {
+            const folderContent = document.getElementById('themes-folder-content');
+            const toggleButton = document.querySelector('.folder-toggle');
+            
+            folderContent.classList.toggle('expanded');
+            
+            if (folderContent.classList.contains('expanded')) {
+                toggleButton.textContent = '📂 Скрыть темы';
+                // Загружаем темы при первом открытии
+                if (folderContent.children.length === 0) {
+                    updateCustomThemesFolder();
+                }
+            } else {
+                toggleButton.textContent = '📂 Показать темы';
+            }
+        }
+
+        function playCustomTheme(themeId) {
+            selectedSection = `custom-${themeId}`;
+            startGame();
+        }
+
+        function editCustomTheme(themeId) {
+            openCustomThemeModal(themeId);
+        }
+
+        function deleteCustomTheme(themeId) {
+            if (confirm('Вы уверены, что хотите удалить эту тему? Это действие нельзя отменить.')) {
+                const customThemes = JSON.parse(localStorage.getItem('customThemes') || '[]');
+                const updatedThemes = customThemes.filter(theme => theme.id !== themeId);
+                localStorage.setItem('customThemes', JSON.stringify(updatedThemes));
+                updateCustomThemesFolder();
+                alert('Тема удалена!');
+            }
+        }
+
+        // Инициализация
+        createAnimatedBackground();
+        selectSection('chess'); // Выбираем шахматы по умолчанию
+    </script>
+</body>
+</html>

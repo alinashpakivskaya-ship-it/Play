@@ -1,0 +1,351 @@
+/* modal-styles.css - Стабильные стили для модальных окон без анимаций */
+
+/* Основные стили модального окна */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(5px);
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 20px;
+    padding: 25px;
+    max-width: 800px;
+    width: 95%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 0 30px rgba(241, 196, 15, 0.4);
+    border: 3px solid #F1C40F;
+}
+
+.chess-modal, .math-modal, .russian-modal {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+}
+
+/* Заголовок модального окна */
+.modal-header {
+    text-align: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+.modal-header h2 {
+    font-size: 2rem;
+    color: #2C3E50;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, #8B4513, #D2691E);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.category-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #FF6B6B, #7209B7);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 1rem;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Контент вопроса */
+.question-content {
+    margin-bottom: 20px;
+    max-height: 65vh;
+    overflow-y: auto;
+}
+
+.question-text {
+    font-size: 1.5rem;
+    line-height: 1.4;
+    margin-bottom: 20px;
+    padding: 20px;
+    background: linear-gradient(135deg, rgba(52, 152, 219, 0.1), rgba(155, 89, 182, 0.1));
+    border-radius: 15px;
+    border: 2px solid #4169E1;
+    font-weight: 600;
+    text-align: center;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+}
+
+/* Сетка ответов */
+.answers-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 45vh;
+    overflow-y: auto;
+    margin-bottom: 15px;
+}
+
+.answer-option {
+    padding: 15px 20px;
+    border: 2px solid #e0e0e0;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    background: white;
+    font-weight: 500;
+    text-align: center;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+}
+
+.answer-option:hover {
+    border-color: #4169E1;
+    background: rgba(52, 152, 219, 0.05);
+}
+
+.answer-option.selected {
+    border-color: #06D6A0;
+    background: linear-gradient(135deg, rgba(6, 214, 160, 0.1), rgba(52, 152, 219, 0.1));
+    box-shadow: 0 0 15px rgba(6, 214, 160, 0.3);
+}
+
+/* Футер модального окна */
+.modal-footer {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.modal-btn {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 40px;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    min-width: 160px;
+    transition: none; /* Убраны все переходы */
+}
+
+.confirm-btn {
+    background: linear-gradient(135deg, #06D6A0, #4169E1);
+    color: white;
+}
+
+.cancel-btn {
+    background: linear-gradient(135deg, #FF6B6B, #F72585);
+    color: white;
+}
+
+.continue-btn {
+    background: linear-gradient(135deg, #FFD166, #06D6A0);
+    color: white;
+}
+
+.modal-btn:hover {
+    opacity: 0.9; /* Только изменение прозрачности */
+}
+
+.modal-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Адаптивность для модальных окон */
+@media (max-width: 1024px) {
+    .modal-content {
+        padding: 20px;
+        max-width: 85%;
+    }
+    
+    .question-text {
+        font-size: 1.3rem;
+    }
+    
+    .answer-option {
+        font-size: 1.1rem;
+    }
+    
+    .modal-header h2 {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .modal-content {
+        padding: 15px;
+        max-width: 90%;
+    }
+    
+    .question-text {
+        font-size: 1.2rem;
+        padding: 15px;
+        line-height: 1.3;
+    }
+    
+    .answer-option {
+        font-size: 1rem;
+        padding: 12px 15px;
+    }
+    
+    .modal-btn {
+        font-size: 1rem;
+        padding: 10px 20px;
+        min-width: 140px;
+    }
+    
+    .modal-header h2 {
+        font-size: 1.6rem;
+    }
+    
+    .modal-footer {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .answers-grid {
+        gap: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-content {
+        padding: 12px;
+        margin: 10px;
+        border-radius: 15px;
+    }
+    
+    .question-text {
+        font-size: 1.1rem;
+        padding: 12px;
+        line-height: 1.3;
+        border-radius: 12px;
+        border: 1px solid #4169E1;
+    }
+    
+    .answer-option {
+        font-size: 0.95rem;
+        padding: 10px 12px;
+        border-radius: 12px;
+    }
+    
+    .modal-btn {
+        font-size: 0.95rem;
+        padding: 8px 16px;
+        min-width: 120px;
+        border-radius: 30px;
+    }
+    
+    .modal-header h2 {
+        font-size: 1.4rem;
+        margin-bottom: 8px;
+    }
+    
+    .category-badge {
+        font-size: 0.9rem;
+        padding: 6px 12px;
+    }
+    
+    .answers-grid {
+        gap: 8px;
+    }
+}
+
+/* Стили для скроллбара */
+.modal-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 8px;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+    background: #4169E1;
+    border-radius: 8px;
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+    background: #3151b0;
+}
+
+.question-content::-webkit-scrollbar,
+.answers-grid::-webkit-scrollbar {
+    width: 4px;
+}
+
+.question-content::-webkit-scrollbar-track,
+.answers-grid::-webkit-scrollbar-track {
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.question-content::-webkit-scrollbar-thumb,
+.answers-grid::-webkit-scrollbar-thumb {
+    background: #4ECDC4;
+    border-radius: 8px;
+}
+
+/* Улучшенная видимость для длинного контента */
+.question-content {
+    scrollbar-width: thin;
+    scrollbar-color: #4ECDC4 #f8f9fa;
+}
+
+.answers-grid {
+    scrollbar-width: thin;
+    scrollbar-color: #4ECDC4 #f8f9fa;
+}
+
+/* Гарантия что всё помещается */
+.modal-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.question-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.answers-grid {
+    flex: 1;
+}
+
+/* Убедимся что кнопки всегда видны */
+.modal-footer {
+    flex-shrink: 0;
+    margin-top: auto;
+}
+
+/* Убираем все трансформации и переходы */
+* {
+    box-sizing: border-box;
+}
+
+.answer-option,
+.modal-btn,
+.question-text {
+    transform: none !important;
+    transition: none !important;
+}

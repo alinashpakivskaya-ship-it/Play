@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сказки - Игра Знаний</title>
+    <link rel="stylesheet" href="chess-style.css">
+    <link rel="stylesheet" href="modal-styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Анимированный фон для сказок -->
+    <div class="chess-background">
+        <div class="chess-bubble bubble-1">📚</div>
+        <div class="chess-bubble bubble-2">🧚</div>
+        <div class="chess-bubble bubble-3">🏰</div>
+        <div class="chess-bubble bubble-4">🐺</div>
+        <div class="chess-bubble bubble-5">🎯</div>
+        <div class="floating-pawn">А</div>
+        <div class="floating-pawn">Б</div>
+        <div class="floating-pawn">В</div>
+    </div>
+
+    <!-- Конфетти -->
+    <div class="confetti-container"></div>
+
+    <div class="chess-container">
+        <!-- Заголовок -->
+        <header class="chess-header">
+            <div class="header-content">
+                <h1 class="chess-title">
+                    <span class="title-part">📖 Сказки</span>
+                    <span class="title-part">и Истории 🧚</span>
+                </h1>
+                <p class="chess-subtitle">Открой волшебный мир сказочных приключений!</p>
+                <div class="header-buttons">
+                    <button class="back-button" onclick="goBack()">← Назад к выбору</button>
+                    <button class="new-game-button" onclick="startNewGame()">🔄 Новая игра</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Основной игровой экран -->
+        <main class="chess-game">
+            <!-- Левая панель - Игровая доска -->
+            <section class="board-section">
+                <div class="board-container">
+                    <div class="board-header">
+                        <h2>🎯 Игровая Доска</h2>
+                        <p>Найди поле, которое покажет компьютер!</p>
+                    </div>
+                    
+                    <!-- Крупное отображение текущего поля -->
+                    <div class="current-field-display" id="current-field-display">
+                        <div class="field-name-large">Начинаем игру!</div>
+                    </div>
+                    
+                    <div class="game-board-container">
+                        <div class="game-board" id="game-board">
+                            <!-- Доска генерируется JavaScript -->
+                        </div>
+                        <!-- Фишка игрока -->
+                        <div class="player-token" id="player-token"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Центральная панель - Цветные карточки -->
+            <section class="cards-section">
+                <div class="cards-container">
+                    <div class="cards-header">
+                        <h2>🎨 Цветные Карточки</h2>
+                        <p>Выбери карточку цвета твоего поля!</p>
+                    </div>
+                    
+                    <div class="color-cards" id="color-cards">
+                        <!-- Карточки генерируются JavaScript -->
+                    </div>
+                    
+                    <div class="current-field" id="current-field">
+                        <div class="field-card">
+                            <div class="field-icon">🎯</div>
+                            <div class="field-info">
+                                <div class="field-name">Выбери поле</div>
+                                <div class="field-category">Найди нужную клетку</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Панель инструкций -->
+                    <div class="instructions-panel" id="instructions-panel">
+                        <div class="instruction-step active" id="step-1">
+                            <div class="step-number">1</div>
+                            <div class="step-text">🎯 Найди поле на доске, которое показано выше</div>
+                        </div>
+                        <div class="instruction-step" id="step-2">
+                            <div class="step-number">2</div>
+                            <div class="step-text">🎨 Выбери карточку цвета твоего поля</div>
+                        </div>
+                        <div class="instruction-step" id="step-3">
+                            <div class="step-number">3</div>
+                            <div class="step-text">❓ Ответь на вопрос и получи монету!</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Правая панель - Игроки и магазин -->
+            <section class="info-section">
+                <!-- Информация об игроках -->
+                <div class="players-panel">
+                    <div class="panel-header">
+                        <h3>👑 Игроки</h3>
+                        <div class="turn-indicator" id="turn-indicator">
+                            <span class="turn-dot"></span>
+                            Ход: <span id="current-player">Игрок 1</span>
+                        </div>
+                    </div>
+                    
+                    <div class="players-list" id="players-list">
+                        <!-- Игроки генерируются JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Магазин -->
+                <div class="shop-panel">
+                    <div class="panel-header">
+                        <h3>🛍️ Магазин Персонажей</h3>
+                        <div class="coins-display">
+                            💰 <span id="player-coins">0</span> монет
+                        </div>
+                    </div>
+                    
+                    <div class="shop-items" id="shop-items">
+                        <!-- Товары генерируются JavaScript -->
+                    </div>
+                    
+                    <button class="buy-button" id="buy-button" disabled>🎁 Купить выбранное</button>
+                </div>
+
+                <!-- Текущее задание -->
+                <div class="task-panel">
+                    <div class="panel-header">
+                        <h3>📝 Задание</h3>
+                    </div>
+                    <div class="task-content" id="task-content">
+                        <p>🎯 Начинаем игру! Первый игрок ищет поле...</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Модальное окно с вопросом -->
+    <div class="modal" id="question-modal">
+        <div class="modal-content chess-modal">
+            <div class="modal-header">
+                <h2 id="question-category">📖 Сказки</h2>
+                <div class="category-badge" id="category-badge">Эмодзи</div>
+            </div>
+            
+            <div class="question-content" id="question-content">
+                <div class="question-text" id="question-text">
+                    Загрузка вопроса...
+                </div>
+                
+                <div class="answers-grid" id="answers-grid">
+                    <!-- Варианты ответов -->
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="modal-btn confirm-btn" id="confirm-answer" disabled>✅ Проверить ответ</button>
+                <button class="modal-btn cancel-btn" onclick="closeQuestionModal()">❌ Отмена</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно с результатом -->
+    <div class="modal" id="result-modal">
+        <div class="modal-content result-modal">
+            <div class="result-icon" id="result-icon">🎯</div>
+            <h2 id="result-title">Результат</h2>
+            
+            <div class="result-content" id="result-content">
+                <p class="result-answer">Твой ответ: <span id="player-answer" class="player-answer"></span></p>
+                <p id="correct-answer" class="correct-answer"></p>
+            </div>
+            
+            <div class="reward-info" id="reward-info">
+                <div class="coins-earned">+<span id="coins-earned">0</span> монет</div>
+            </div>
+            
+            <button class="modal-btn continue-btn" onclick="closeResultModal()">🎮 Продолжить игру</button>
+        </div>
+    </div>
+
+    <!-- Модальное окно победы -->
+    <div class="modal" id="win-modal">
+        <div class="modal-content win-modal">
+            <div class="win-icon">🏆</div>
+            <h2>🎉 Поздравляем!</h2>
+            
+            <div class="winner-info" id="winner-info">
+                <div class="winner-name" id="winner-name">Игрок 1</div>
+                <div class="winner-title">стал Королём Сказок!</div>
+            </div>
+            
+            <div class="win-stats">
+                <div class="stat">🕒 Время игры: <span id="game-time">0:00</span></div>
+                <div class="stat">💰 Заработано монет: <span id="total-coins">0</span></div>
+                <div class="stat">🎯 Отвечено вопросов: <span id="total-questions">0</span></div>
+            </div>
+            
+            <div class="win-actions">
+                <button class="modal-btn play-again-btn" onclick="playAgain()">🔄 Играть снова</button>
+                <button class="modal-btn menu-btn" onclick="goToMenu()">🏠 В главное меню</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="fairy-tales-script.js"></script>
+</body>
+</html>
